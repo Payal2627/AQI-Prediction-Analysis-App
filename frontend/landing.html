@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Air Quality Index Analysis and Prediction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+
+.stats{
+    padding:80px 10%;
+    background:#0f172a;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.stat-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:16px;
+    padding:30px;
+    text-align:center;
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-card h3{
+    color:#3b82f6;
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.stat-card p{
+    color:#cbd5e1;
+}
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 8%;
+
+    background:#111827;
+
+    border-bottom:1px solid #334155;
+
+    z-index:1000;
+}
+
+.logo{
+    color:#60a5fa;
+
+    font-size:30px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+}
+
+.nav-links{
+    display:flex;
+    flex-direction:row;
+
+    align-items:center;
+
+    gap:30px;
+
+    list-style:none;
+
+    margin:0;
+    padding:0;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#ffffff;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#3b82f6;
+}
+
+.dashboard-btn{
+    background:#2563eb;
+
+    color:white !important;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    font-weight:700;
+}
+
+.hero-stats{
+    margin-top:50px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    width:100%;
+    max-width:900px;
+}
+
+.hero-stat{
+    background:#1e293b;
+
+    border:1px solid #334155;
+
+    border-radius:16px;
+
+    padding:25px;
+
+    text-align:center;
+
+    transition:.3s;
+}
+
+.hero-stat:hover{
+    transform:translateY(-5px);
+}
+
+.hero-stat h3{
+    font-size:34px;
+
+    color:#60a5fa;
+
+    margin-bottom:8px;
+}
+
+.hero-stat p{
+    color:#cbd5e1;
+}
+
+@media(max-width:768px){
+
+    .hero-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:#f8fafc;
+}
+
+.hero{
+    padding-top:120px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+.badge{
+    background:#1e293b;
+    padding:10px 20px;
+    border-radius:30px;
+    color:#60a5fa;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+h1{
+    font-size:56px;
+    margin-bottom:20px;
+    font-weight:700;
+}
+
+.highlight{
+    color:#3b82f6;
+}
+
+.subtitle{
+    max-width:800px;
+    font-size:20px;
+    color:#cbd5e1;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+.btn{
+    display:inline-block;
+    text-decoration:none;
+    background:#2563eb;
+    color:white;
+    padding:16px 36px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    background:#1d4ed8;
+}
+
+.features{
+    padding:80px 10%;
+    background:#111827;
+}
+
+.section-title{
+    text-align:center;
+    font-size:36px;
+    margin-bottom:50px;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1e293b;
+    padding:25px;
+    border-radius:16px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#60a5fa;
+}
+
+.card p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+.about{
+    padding:80px 10%;
+    text-align:center;
+}
+
+.about p{
+    max-width:900px;
+    margin:auto;
+    line-height:1.8;
+    color:#cbd5e1;
+    font-size:18px;
+}
+
+
+
+.footer{
+    text-align:center;
+    padding:30px;
+    border-top:1px solid #334155;
+    color:#94a3b8;
+}
+
+.developer{
+    padding:80px 10%;
+    background:#111827;
+    text-align:center;
+}
+
+.developer-card{
+    max-width:700px;
+    margin:auto;
+
+    background:#1e293b;
+
+    border:1px solid #334155;
+
+    border-radius:18px;
+
+    padding:40px;
+}
+
+.developer-card h3{
+    color:#60a5fa;
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.developer-card p{
+    color:#cbd5e1;
+    margin-bottom:25px;
+}
+
+.skills{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.skills span{
+    background:#2563eb;
+    color:white;
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:14px;
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        AQI Analysis & Prediction
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About AQI</a></li>
+        <li>
+            <a href="index.html" class="dashboard-btn">
+                Dashboard
+            </a>
+        </li>
+    </ul>
+
+</nav>
+
+<section class="hero" id="home">
+
+    <div class="badge">
+    Machine Learning Based Air Quality Monitoring Platform
+</div>
+
+    <h1>
+    Air Quality Index
+    <span class="highlight">Analysis and Prediction</span>
+</h1>
+
+    <p class="subtitle">
+        Predict Air Quality Index using Machine Learning,
+        monitor pollution levels, analyze environmental conditions,
+        and receive health recommendations based on air quality data.
+    </p>
+
+    <a href="index.html" class="btn">
+        Launch Dashboard
+    </a>
+
+    <div class="hero-stats">
+
+    <div class="hero-stat">
+        <h3>6</h3>
+        <p>Pollutants</p>
+    </div>
+
+    <div class="hero-stat">
+        <h3>ML</h3>
+        <p>Prediction Engine</p>
+    </div>
+
+    <div class="hero-stat">
+        <h3>6</h3>
+        <p>AQI Categories</p>
+    </div>
+
+    <div class="hero-stat">
+        <h3>24/7</h3>
+        <p>Monitoring</p>
+    </div>
+
+</div>
+
+</section>
+
+<section class="features" id="features">
+
+    <h2 class="section-title">
+        Key Features
+    </h2>
+
+    <div class="feature-grid">
+
+        <div class="card">
+            <h3>AQI Prediction</h3>
+            <p>
+                Predict air quality using trained Machine Learning models.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Health Recommendations</h3>
+            <p>
+                Receive health advice based on predicted AQI levels.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Trend Analytics</h3>
+            <p>
+                Visualize AQI history and trends using interactive charts.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Location Monitoring</h3>
+            <p>
+                Track air quality conditions based on geographical location.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="about" id="about">
+
+    <h2 class="section-title">
+        What is AQI?
+    </h2>
+
+    <p>
+        Air Quality Index (AQI) is a standardized measure used to indicate
+        how clean or polluted the air is and what associated health effects
+        might concern individuals. This Air Quality Index Analysis and Prediction system uses Machine Learning
+        techniques to estimate AQI values from pollutant concentrations and
+        provide meaningful environmental insights.
+    </p>
+
+</section>
+
+<section class="stats">
+
+    <h2 class="section-title">
+        Platform Highlights
+    </h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>6</h3>
+            <p>Pollutants Analyzed</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>ML</h3>
+            <p>Machine Learning Prediction Engine</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>6</h3>
+            <p>AQI Health Categories</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>24/7</h3>
+            <p>Air Quality Monitoring</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="developer">
+
+    <h2 class="section-title">
+        Developed By
+    </h2>
+
+    <div class="developer-card">
+
+        <h3>Payal Malandkar</h3>
+
+        <p>
+            Python Developer | Data Analyst | Machine Learning Enthusiast
+        </p>
+
+        <div class="skills">
+
+            <span>Python</span>
+            <span>Flask</span>
+            <span>Machine Learning</span>
+            <span>Data Analysis</span>
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="footer">
+
+    Built with Python • Flask • Machine Learning • HTML • CSS • JavaScript • Chart.js
+
+</div>
+
+</body>
+</html>
+
